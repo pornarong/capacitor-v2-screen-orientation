@@ -5,8 +5,8 @@ import Capacitor
  * Please read the Capacitor iOS Plugin Development Guide
  * here: https://capacitorjs.com/docs/plugins/ios
  */
-@objc(ScreenOrientation)
-public class ScreenOrientation: CAPPlugin {
+@objc(ScreenOrientationPlugin)
+public class ScreenOrientationPlugin: CAPPlugin {
 
     public let screenOrientationChangeEvent = "screenOrientationChange"
     private var implementation: ScreenOrientation?

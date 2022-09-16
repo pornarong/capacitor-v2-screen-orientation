@@ -8,7 +8,7 @@ import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 
-@NativePlugin
+@NativePlugin(name = "ScreenOrientation")
 public class ScreenOrientationPlugin extends Plugin {
 
     public static final String SCREEN_ORIENTATION_CHANGE_EVENT = "screenOrientationChange";

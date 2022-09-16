@@ -23,12 +23,14 @@ import UIKit
                 return
             }
             let currentOrientationValue = UIDevice.current.orientation.rawValue
+            let currentOrientationType = strongSelf.convertOrientationValueToType(currentOrientationValue)
+            let currentOrientationMask = strongSelf.convertOrientationTypeToMask(currentOrientationType)
             let nextOrientationMask = strongSelf.convertOrientationTypeToMask(orientationType)
             let nextOrientationValue = strongSelf.convertOrientationTypeToValue(orientationType)
-            UIDevice.current.setValue(nextOrientationValue, forKey: "orientation")
+            strongSelf.setOrientation(nextOrientationMask, nextOrientationValue)
             ScreenOrientation.supportedInterfaceOrientations = nextOrientationMask
             UINavigationController.attemptRotationToDeviceOrientation()
-            UIDevice.current.setValue(currentOrientationValue, forKey: "orientation")
+            strongSelf.setOrientation(currentOrientationMask, currentOrientationValue)
             strongSelf.notifyOrientationChangeListeners(orientationType)
             completion()
         }
@@ -145,6 +147,15 @@ import UIKit
               isPortrait = UIApplication.shared.statusBarOrientation.isPortrait
             }
             return isPortrait ? "portrait-primary" : "landscape-primary"
+        }
+    }
+    
+    // Since UIDevice.current.setValue(value, forKey: "orientation") is not supported ios 16 onwards
+    @objc private func setOrientation(_ mask: UIInterfaceOrientationMask, _ value: Int) {
+        if #available(iOS 16.0, *), let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: mask))
+        } else {
+            UIDevice.current.setValue(value, forKey: "orientation")
         }
     }
 }

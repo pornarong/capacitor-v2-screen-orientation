@@ -153,6 +153,7 @@ import UIKit
     // Since UIDevice.current.setValue(value, forKey: "orientation") is not supported ios 16 onwards
     @objc private func setOrientation(_ mask: UIInterfaceOrientationMask, _ value: Int) {
         if #available(iOS 16.0, *), let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+            windowScene?.keyWindow?.rootViewController?.setNeedsUpdateOfSupportedInterfaceOrientations()
             windowScene.requestGeometryUpdate(.iOS(interfaceOrientations: mask))
         } else {
             UIDevice.current.setValue(value, forKey: "orientation")
